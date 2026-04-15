@@ -19,7 +19,7 @@ const sequelize = new Sequelize(
     define: {
       timestamps: true,         // createdAt + updatedAt on every table
       underscored: true,        // snake_case column names in DB
-      freezeTableName: false,   // Sequelize pluralizes table names
+      freezeTableName: false,   
     },
   }
 );

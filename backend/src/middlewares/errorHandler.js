@@ -2,7 +2,6 @@ const errorHandler = (err, req, res, next) => {
   console.error(`[ERROR] ${err.message}`);
   console.error(err.stack);
 
-  // Sequelize validation errors
   if (err.name === 'SequelizeValidationError') {
     return res.status(400).json({
       success: false,
