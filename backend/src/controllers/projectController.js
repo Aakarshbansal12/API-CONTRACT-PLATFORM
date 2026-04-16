@@ -1,5 +1,6 @@
 const { Project, Contract, DiffReport } = require('../models');
 const AppError = require('../utils/AppError');
+const { sequelize } = require("sequelize");
 
 // ── GET /api/projects ────────────────────────────────────────
 // Returns all projects, newest first, with a count of contracts
@@ -8,16 +9,20 @@ const getAllProjects = async (req, res, next) => {
     const projects = await Project.findAll({
       order: [['createdAt', 'DESC']],
       // Include contract count without fetching all contract data
+     include: [
+        {
+          model: Contract,
+          as: 'contracts',
+          attributes: [], // contract data nahi chahiye
+        },
+      ],
+
       attributes: {
         include: [
-          [
-            Project.sequelize.literal(
-              '(SELECT COUNT(*) FROM contracts WHERE contracts.project_id = Project.id)'
-            ),
-            'contractCount',
-          ],
+          [Project.sequelize.fn('COUNT', Project.sequelize.col('contracts.id')), 'contractCount'],
         ],
       },
+      group: ['Project.id'], // group by project to get correct counts  
     });
 
     res.json({
