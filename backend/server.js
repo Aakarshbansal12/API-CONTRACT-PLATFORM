@@ -7,6 +7,7 @@ const helmet = require('helmet');
 const { sequelize } = require('./src/models');
 const errorHandler = require('./src/middlewares/errorHandler');
 const healthRoutes = require('./src/routes/health');
+const projectRoutes = require('./src/routes/projectRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -20,6 +21,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // ── Routes ──────────────────────────────────────────────────
 app.use('/api/health', healthRoutes);
+app.use('/api/projects', projectRoutes);
 
 // ── 404 Handler ─────────────────────────────────────────────
 app.use((req, res) => {
